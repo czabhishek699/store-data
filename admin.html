@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ojha Admin | Control Panel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="admin-form">
+        <h2 style="margin-bottom:20px;">Staff Portal</h2>
+        <form id="uploadForm">
+            <input type="text" id="name" placeholder="App Name (e.g. BudgetOJHA)" required>
+            <input type="text" id="apk" placeholder="APK URL (e.g. cc.apk)" required>
+            <input type="text" id="logo" placeholder="Logo Image URL" required>
+            
+            <p style="font-size:12px; color:var(--accent); margin-bottom:5px;">Compulsory Screenshots (3)</p>
+            <div id="ssContainer">
+                <input type="text" class="ss-input compulsory" placeholder="Screenshot URL 1" required>
+                <input type="text" class="ss-input compulsory" placeholder="Screenshot URL 2" required>
+                <input type="text" class="ss-input compulsory" placeholder="Screenshot URL 3" required>
+            </div>
+            <button type="button" onclick="addMoreSS()" style="background:#334155; color:white; border:none; padding:8px; width:100%; border-radius:8px; margin-bottom:15px;">+ Add Extra Screenshots</button>
+
+            <textarea id="desc" rows="4" placeholder="Enter app description..." required></textarea>
+            
+            <button type="submit" class="dl-btn">🚀 Publish App</button>
+        </form>
+        <a href="index.html" style="display:block; text-align:center; color:var(--gray); margin-top:15px; text-decoration:none;">Back to Store</a>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // MATCH WITH INDEX.HTML CONFIG
+       const firebaseConfig = {
+  apiKey: "AIzaSyAG_Irxl4In1nFAxvKKjZHEkEslYbC2r1I",
+  authDomain: "ojhastore10.firebaseapp.com",
+  projectId: "ojhastore10",
+  storageBucket: "ojhastore10.firebasestorage.app",
+  messagingSenderId: "885824199720",
+  appId: "1:885824199720:web:1a0c5e0c4499100545e91d"
+};
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        window.addMoreSS = () => {
+            const inp = document.createElement('input');
+            inp.type = 'text';
+            inp.className = 'ss-input';
+            inp.placeholder = 'Extra Screenshot URL';
+            document.getElementById('ssContainer').appendChild(inp);
+        };
+
+        document.getElementById('uploadForm').onsubmit = (e) => {
+            e.preventDefault();
+            const ssList = [];
+            document.querySelectorAll('.ss-input').forEach(i => {
+                if(i.value.trim() !== "") ssList.push(i.value.trim());
+            });
+
+            const data = {
+                name: document.getElementById('name').value,
+                apkUrl: document.getElementById('apk').value,
+                logo: document.getElementById('logo').value,
+                screenshots: ssList,
+                description: document.getElementById('desc').value,
+                developer: "Avishek Ojha"
+            };
+
+            push(ref(db, 'apps'), data).then(() => {
+                alert("App Published!");
+                location.reload();
+            });
+        };
+    </script>
+</body>
+</html>
