@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ojha Store | Avishek Ojha</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">OJHA<span>STORE</span></div>
+        <a href="admin.html" class="admin-link">Staff Login</a>
+    </nav>
+
+    <div class="container">
+        <h2 style="margin: 15px 0;">New Releases</h2>
+        <div class="app-grid" id="appGrid">
+            <!-- Data from Firebase -->
+        </div>
+    </div>
+
+    <!-- App Detail Bottom Sheet -->
+    <div id="appModal" class="modal" onclick="if(event.target == this) closeModal()">
+        <div class="modal-content">
+            <div id="modalData"></div>
+            
+            <div class="dl-box">
+                <button class="dl-btn" id="dlButton" onclick="startDownloadSequence()">
+                    <span id="btnText">Download APK</span>
+                    <div class="progress-bar" id="pBar"></div>
+                </button>
+            </div>
+
+            <div id="openAppArea" style="text-align: center; margin-top: 10px;"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Avishek Ojha. All rights reserved.</p>
+        <p>This store is protected by copyright law.</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // REPLACE WITH YOUR FIREBASE CONFIG
+       const firebaseConfig = {
+  apiKey: "AIzaSyAG_Irxl4In1nFAxvKKjZHEkEslYbC2r1I",
+  authDomain: "ojhastore10.firebaseapp.com",
+  projectId: "ojhastore10",
+  storageBucket: "ojhastore10.firebasestorage.app",
+  messagingSenderId: "885824199720",
+  appId: "1:885824199720:web:1a0c5e0c4499100545e91d"
+};
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        let activeApp = null;
+
+        onValue(ref(db, 'apps'), (snapshot) => {
+            const grid = document.getElementById('appGrid');
+            grid.innerHTML = '';
+            const data = snapshot.val();
+            for (let id in data) {
+                const item = data[id];
+                const card = document.createElement('div');
+                card.className = 'app-card';
+                card.innerHTML = `
+                    <img src="${item.logo}" class="app-icon">
+                    <div class="app-name">${item.name}</div>
+                `;
+                card.onclick = () => openDetails(item);
+                grid.appendChild(card);
+            }
+        });
+
+        window.openDetails = (app) => {
+            activeApp = app;
+            let ssHtml = '';
+            app.screenshots.forEach(url => {
+                ssHtml += `<img src="${url}" class="ss-item">`;
+            });
+
+            document.getElementById('modalData').innerHTML = `
+                <div style="display:flex; gap:15px; align-items:center;">
+                    <img src="${app.logo}" style="width:65px; height:65px; border-radius:15px; object-fit:cover;">
+                    <div>
+                        <h2 style="margin:0">${app.name}</h2>
+                        <p style="color:#10b981; font-size:14px; margin:0">Avishek Ojha</p>
+                    </div>
+                </div>
+                <div class="screenshots">${ssHtml}</div>
+                <p style="color:#94a3b8; font-size:14px; line-height:1.5;">${app.description}</p>
+            `;
+
+            document.getElementById('openAppArea').innerHTML = `
+                <a href="#" onclick="tryOpenApp('${app.name}')" style="color:var(--primary); font-size:13px; text-decoration:none;">Already installed? Open App</a>
+            `;
+            document.getElementById('appModal').classList.add('active');
+        };
+
+        window.startDownloadSequence = () => {
+            const btnText = document.getElementById('btnText');
+            const pBar = document.getElementById('pBar');
+            
+            btnText.innerText = "Requesting Server...";
+            pBar.style.left = "0";
+
+            setTimeout(() => btnText.innerText = "Fetching APK...", 1500);
+
+            setTimeout(() => {
+                btnText.innerText = "✅ Download Started";
+                // TRIGGER DIRECT SERVER DOWNLOAD
+                const a = document.createElement('a');
+                a.href = activeApp.apkUrl; // e.g., "cc.apk"
+                a.download = activeApp.apkUrl;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                setTimeout(closeModal, 2000);
+            }, 4000);
+        };
+
+        window.tryOpenApp = (name) => {
+            var ifr = document.createElement("iframe");
+            ifr.style.display = "none";
+            ifr.src = "ojhastore://open?app=" + name;
+            document.body.appendChild(ifr);
+            setTimeout(() => document.body.removeChild(ifr), 1000);
+        };
+
+        window.closeModal = () => {
+            document.getElementById('appModal').classList.remove('active');
+            document.getElementById('pBar').style.left = "-100%";
+            document.getElementById('btnText').innerText = "Download APK";
+        };
+    </script>
+</body>
+</html>

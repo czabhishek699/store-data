@@ -1,0 +1,168 @@
+:root {
+    --primary: #3b82f6;
+    --accent: #10b981;
+    --dark: #0f172a;
+    --card: #1e293b;
+    --text: #f8fafc;
+    --gray: #94a3b8;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--text);
+    overflow-x: hidden;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #334155;
+}
+
+.logo { font-size: 1.4rem; font-weight: 800; }
+.logo span { color: var(--primary); }
+
+.admin-link {
+    text-decoration: none;
+    color: var(--gray);
+    font-size: 0.8rem;
+    border: 1px solid #334155;
+    padding: 5px 12px;
+    border-radius: 8px;
+}
+
+/* App Grid */
+.container { padding: 20px 5%; max-width: 1200px; margin: 0 auto; }
+
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.app-card {
+    background: var(--card);
+    padding: 12px;
+    border-radius: 20px;
+    text-align: center;
+    cursor: pointer;
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.app-icon {
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 22%;
+    object-fit: cover;
+    margin-bottom: 8px;
+}
+
+.app-name { font-size: 0.9rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Bottom Sheet Modal */
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    z-index: 2000;
+    align-items: flex-end;
+}
+
+.modal.active { display: flex; }
+
+.modal-content {
+    background: var(--card);
+    width: 100%;
+    padding: 25px;
+    border-radius: 25px 25px 0 0;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.4s cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Screenshot Gallery (Infinite Horizontal) */
+.screenshots {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    margin: 20px 0;
+    padding-bottom: 5px;
+    scrollbar-width: none;
+}
+.screenshots::-webkit-scrollbar { display: none; }
+
+.ss-item {
+    height: 220px;
+    min-width: 130px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #0f172a;
+}
+
+/* Download Progress Animation */
+.dl-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 15px 0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.dl-btn {
+    width: 100%;
+    height: 100%;
+    background: var(--primary);
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+}
+
+.progress-bar {
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: var(--accent);
+    z-index: 1;
+    transition: left 4s linear;
+}
+
+/* Admin Form Specifics */
+.admin-form { max-width: 600px; margin: 30px auto; background: var(--card); padding: 25px; border-radius: 20px; }
+input, textarea { width: 100%; padding: 12px; margin-bottom: 12px; background: var(--dark); border: 1px solid #334155; color: white; border-radius: 10px; }
+.compulsory { border-left: 4px solid #ef4444; }
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+footer { text-align: center; padding: 40px; color: var(--gray); font-size: 0.8rem; }
+
+/* Desktop Grid Adjust */
+@media (min-width: 768px) {
+    .app-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+    .modal-content { max-width: 500px; margin: 0 auto; border-radius: 25px; margin-bottom: 5vh; }
+}
