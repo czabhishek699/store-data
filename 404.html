@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | Ojha Store</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --dark: #0f172a;
+            --card: #1e293b;
+            --text: #f8fafc;
+            --accent: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
+        body {
+            background-color: var(--dark);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            padding: 20px;
+        }
+
+        .error-code {
+            font-size: 10rem;
+            font-weight: 900;
+            line-height: 1;
+            background: linear-gradient(to bottom, var(--primary), #1d4ed8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        h1 { font-size: 2rem; margin-bottom: 15px; }
+        p { color: #94a3b8; margin-bottom: 30px; font-size: 1.1rem; }
+
+        .back-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50px;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+            background: #2563eb;
+            box-shadow: 0 15px 25px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Decorative background elements */
+        .stars {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(white, rgba(255,255,255,0)) no-repeat;
+            background-size: 2px 2px;
+            opacity: 0.3;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Animated Circle */
+        .circle {
+            position: absolute;
+            border: 2px solid rgba(59, 130, 246, 0.1);
+            border-radius: 50%;
+            z-index: 1;
+            animation: pulse 8s linear infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stars"></div>
+    <div class="circle" style="width: 300px; height: 300px; top: 10%; left: 10%;"></div>
+    <div class="circle" style="width: 500px; height: 500px; bottom: -10%; right: -5%; animation-delay: 4s;"></div>
+
+    <div class="container">
+        <div class="error-code">404</div>
+        <h1>Lost in Space?</h1>
+        <p>The page you are looking for has been moved to a different galaxy <br>or never existed in this store.</p>
+        
+        <a href="https://store.avishekojha.com.np" class="back-btn">Back to Ojha Store</a>
+    </div>
+
+</body>
+</html>
